@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<title>Registration form</title>
+</head>
+<body>
+    <style>
+        label
+        {
+            display: inline-block;
+            text-align: right;
+            width: 45%;
+            
+        }
+        .edit
+        {
+            float: right;
+            margin-right: 2px;
+        }
+        /* .editt
+        {
+            width: 70%;
+        } */
+    </style>
+    <script>
+        function n()
+        {
+            var userid=String(document.getElementById("uname").value);
+            var password=String(document.getElementById("pass").value);
+            var confirmpassword=String(document.getElementById("cpass").value);
+            var name=String(document.getElementById("aname").value);
+            var name1=/^([A-Za-z]{3,50})$/;
+            var email=String(document.getElementById("mail").value);
+            var email1 = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            var zipcode=Number(document.getElementById("zip").value);
+            var date=String(document.getElementById("dob").value);
+            var date1=/^([0-2][0-9]|(3)[0-1])(\/)((0)[1-9]|(1)[0-2])(\/)\([0-9][0-9][0-9]|(1)[0-9][0-9][0-9]|(2)(0)(0)[0-1])$/;
+            if(uname.value.length <= 12 && uname.value.length >= 5)
+            {
+                if(name1.test(name)==true)
+                {
+                    if(email1.test(email)==true)
+                    {
+                        if(date1.test(date)==true)
+                        {
+                            alert('valid');
+                            if(pass.value.length <=12 && pass.value.length >=5 && password==confirmpassword)
+                                {
+                                    alert('password match');
+                                }
+                            else
+                                {
+                                    alert('password didnot match or must be length of 5 to 12');
+                                }
+                        }
+                        else
+                        {
+                            alert('invalid dob')
+                        }
+                    }
+                    else
+                    {
+                        alert('invalid email')
+                    }
+                }
+                else
+                {
+                    alert('invalid name');
+                }    
+            }
+            else
+            {
+                alert(" invalid uname & must be length of 5 to 12")
+            }
+        }
+    </script>
+    <form style=" border:1px solid black; margin-right: 70%; margin-left: 20px;background-color: aquamarine">
+        <h1>Registration form</h1>
+        <hr style="border: 1px solid black; margin-right: 5px; margin-left: 5px">
+        <label>User id:</label>
+        <input type="text" id="uname" class="edit" required><br><br>
+        <label>Password:</label>
+        <input type="password" id="pass" class="edit" required><br><br>
+        <label>Confirm Password:</label>
+        <input type="password" id="cpass" class="edit" required><br><br>
+        <label>Name:</label>
+        <input type="text" id="aname" class="edit" required><br><br>
+        <label>Date of Birth</label>
+        <input type="text" id="dob" class="edit" required><br><br>
+        <label>Address:</label>
+        <input type="text" id="add" class="edit"><br><br>
+        <label>Country:</label>
+        <select name="country"  required>
+            <option selected="" value="Default">select country</option>
+            <option>India</option>
+            <option>Canada</option>
+            <option>America</option>
+            <option>Russia</option>
+            <option>USA</option>
+            <option>Germany</option>
+            <option>China</option>
+            <option>Japan</option>
+        </select><br><br>
+        <label>ZIP Code:</label>
+        <input type="tel" id="zip" class="edit" required><br><br>
+        <label>Email</label>
+        <input type="text" id="mail" class="edit" required><br><br>
+        <label>Sex:</label>
+        <input type="radio" name="gender" id="gendermale" class="editt" required>Male
+        <input type="radio" name="gender" id="genderfemale" class="editt" required>FeMale<br><br>
+        <label>Language:</label>
+        <input type="checkbox" name="lang" id="langEnglish" class="editt" required>English
+        <input type="checkbox" name="lang" id="langNoNEnglish" class="editt" required>NoNEnglish<br><br>
+        <label>About:</label>
+        <input type="text" id="message" class="edit"><br><br>
+        <input type="button" value="Submit" onclick="n()">
+        <input type="reset" value="reset" >
+    </form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
