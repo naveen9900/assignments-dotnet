@@ -1,0 +1,34 @@
+--question:1
+
+select a.account_number,a.account_opening_date,a.customer_number,c.firstname,c.lastname from account_master a
+left join customer_master c on a.customer_number=c.customer_number order by account_number
+
+--question:2
+
+select count(customer_city) Cust_Count from customer_master where customer_city='Delhi' 
+
+--question:3
+
+select c.customer_number,c.firstname,a.account_number from customer_master c
+left join account_master a on c.customer_number=a.customer_number where day(account_opening_date)>15 order by account_number,customer_number
+
+--question:4
+
+select c.customer_number,c.firstname,a.account_number from customer_master c
+left join account_master a on c.customer_number=a.customer_number where account_ststus='terminated' order by customer_number,account_number
+
+--question:5
+
+select transaction_type,count(transaction_number) Trans_Count from account_master left join transaction_details  
+on account_master.account_number=transaction_details.account_number where customer_number like '%001'group by transaction_type
+order by transaction_type
+
+--question:6
+
+select count(customer_number) Count_Customer from customer_master where customer_number not in (select customer_number from account_master)
+
+--question:7
+
+select a.account_number, opening_balance+sum(transaction_amount) Deposit_Amount from account_master a  INNER JOIN transaction_details t
+on a.account_number=t.account_number where transaction_type='deposit' group by account_number
+order by account_number
