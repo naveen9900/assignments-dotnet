@@ -1,0 +1,53 @@
+dxc     0.000GB
+local   0.000GB
+> use listitems
+switched to db listitems
+> db.createCollection("naveen")
+{ "ok" : 1 }
+> db.naveen.insert({_id:1,item:{name:"ab",code:"123"},qty:15,tags:["A","B","C"]})
+WriteResult({ "nInserted" : 1 })
+> db.naveen.insert({_id:1,item:{name:"cd",code:"123"},qty:20,tags:["A"]})
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 11000,
+                "errmsg" : "E11000 duplicate key error collection: listitems.naveen index: _id_ dup key: { _id: 1.0 }"
+        }
+})
+> db.naveen.insert({_id:2,item:{name:"cd",code:"123"},qty:20,tags:["A"]})
+WriteResult({ "nInserted" : 1 })
+> db.naveen.insert({_id:3,item:{name:"ij",code:"456"},qty:25,tags:["A","B"]})
+WriteResult({ "nInserted" : 1 })
+> db.naveen.insert({_id:4,item:{name:"mn",code:"456"},qty:30,tags:["B","A"]})
+WriteResult({ "nInserted" : 1 })
+> db.naveen.insert({_id:5,item:{name:"xy",code:"000"},qty:20,tags:[["A","B"],"C"]})
+WriteResult({ "nInserted" : 1 })
+> db.naveen.find()
+{ "_id" : 1, "item" : { "name" : "ab", "code" : "123" }, "qty" : 15, "tags" : [ "A", "B", "C" ] }
+{ "_id" : 2, "item" : { "name" : "cd", "code" : "123" }, "qty" : 20, "tags" : [ "A" ] }
+{ "_id" : 3, "item" : { "name" : "ij", "code" : "456" }, "qty" : 25, "tags" : [ "A", "B" ] }
+{ "_id" : 4, "item" : { "name" : "mn", "code" : "456" }, "qty" : 30, "tags" : [ "B", "A" ] }
+{ "_id" : 5, "item" : { "name" : "xy", "code" : "000" }, "qty" : 20, "tags" : [ [ "A", "B" ], "C" ] }
+> db.naveen.find({"qty":{$gt:20}})
+{ "_id" : 3, "item" : { "name" : "ij", "code" : "456" }, "qty" : 25, "tags" : [ "A", "B" ] }
+{ "_id" : 4, "item" : { "name" : "mn", "code" : "456" }, "qty" : 30, "tags" : [ "B", "A" ] }
+> db.naveen.find({item:name={$in:"ij","ab","mn"}})
+2019-10-10T18:31:32.477+0530 E  QUERY    [js] uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:40
+> db.naveen.find({item:name:{$in:["ij","ab","mn"]}})
+2019-10-10T18:32:13.759+0530 E  QUERY    [js] uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:25
+> db.naveen.find({item:name:{$in:[ij,ab,mn]}})
+2019-10-10T18:33:21.290+0530 E  QUERY    [js] uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:25
+> db.naveen.find({name:{$in:[ij,ab,mn]}})
+2019-10-10T18:34:01.810+0530 E  QUERY    [js] uncaught exception: ReferenceError: ij is not defined :
+@(shell):1:28
+> db.naveen.find({item.name:{$in:[ij,ab,mn]}})
+2019-10-10T18:34:16.567+0530 E  QUERY    [js] uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:20
+> db.naveen.find({"item.name":{$in:["ij","ab","mn"]}})
+{ "_id" : 1, "item" : { "name" : "ab", "code" : "123" }, "qty" : 15, "tags" : [ "A", "B", "C" ] }
+{ "_id" : 3, "item" : { "name" : "ij", "code" : "456" }, "qty" : 25, "tags" : [ "A", "B" ] }
+{ "_id" : 4, "item" : { "name" : "mn", "code" : "456" }, "qty" : 30, "tags" : [ "B", "A" ] }
+>
