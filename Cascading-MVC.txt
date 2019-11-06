@@ -1,0 +1,99 @@
+-------------------------Cascading.cs-----------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Cascading_MVC.Models
+{
+    public class Cascading
+    {
+        public int cid { get; set; }
+        public int sid { get; set; }
+
+    }
+}
+-----------------------------------------------------------------------------------------
+------------------------Index.cshtml---------------------
+@model Cascading_MVC.Models.Cascading
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>MVC Cascading Dropdownlist</h2>
+@if (ViewBag.countries != null)
+{
+    @Html.DropDownListFor(m => m.cid, ViewBag.countries as SelectList, "Select Country", new { @class = "form-countrol" })
+
+}
+@Html.DropDownListFor(m => m.sid,new SelectList(""), "Select States", new { @class = "form-countrol" })
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#cid").change(function () {
+            var countryid = $(this).val();
+            debugger
+            $.ajax({
+                type: "post",
+                url: "/Cas/GetStates?cid=" + countryid,
+                contentType: "html",
+                success: function (response) {
+                    debugger
+                    $("#sid").empty();
+                    $("#sid").append(response);
+                }
+
+            })
+        })
+    })
+</script>
+-----------------------------------------------------------------------------------------
+-------------------------Cascontroller.cs---------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Cascading_MVC.Models;
+
+namespace Cascading_MVC.Controllers
+{
+    public class CasController : Controller
+    {
+        // GET: Cas
+        public ActionResult Index()
+        {
+            MVC_DemoEntities nav = new MVC_DemoEntities();
+            ViewBag.countries = new SelectList(GetCountries(),"cid","cname");
+            return View();
+        }
+        public List<country> GetCountries()
+        {
+            MVC_DemoEntities nav=new MVC_DemoEntities();
+            List<country> countries = nav.countries.ToList();
+            return countries;
+        }
+        public ActionResult GetStates(int cid)
+        {
+            MVC_DemoEntities nav = new MVC_DemoEntities();
+            List<state> selectlist = nav.states.Where(x => x.cid == cid).ToList();
+            ViewBag.slist = new SelectList(selectlist, "sid", "sname");
+            return PartialView("DisplayStates");
+        }
+    }
+}
+------------------------------------------------------------------------------------------
+------------------Displaystates.cshtml-------------
+@model Cascading_MVC.state
+   <option value="">Select States</option>
+@if(ViewBag.slist !=null)
+{
+    foreach(var item in ViewBag.slist)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}
+
+-----------------------------------------------------------------------------------------
