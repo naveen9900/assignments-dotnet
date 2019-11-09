@@ -1,0 +1,102 @@
+--------------------------Employee class-------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Codefirst_Assignment
+{
+    class Employee
+    {
+        public int EmployeeID { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Gender { get; set; }
+        public string Designation { get; set; }
+        [ForeignKey("Department")]
+
+        public int DepartmentID { get; set; }
+
+        public Department Department { get; set; }
+    }
+}
+----------------------------Department class-----------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Codefirst_Assignment
+{
+    class Department
+    {
+        public int DepartmentID { get; set; }
+        public string DepartmentName { get; set; }
+    }
+}
+------------------------------Employeeontext class---------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Codefirst_Assignment
+{
+    class Department
+    {
+        public int DepartmentID { get; set; }
+        public string DepartmentName { get; set; }
+    }
+}
+---------------------------------program class---------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Codefirst_Assignment
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (EmployeeContext cx = new EmployeeContext())
+            {
+                IList<Department> department = new List<Department>
+                {
+                    new Department{DepartmentID=1,DepartmentName="IT"},
+                    new Department{ DepartmentID=2, DepartmentName="HR"},
+                    new Department{ DepartmentID=3, DepartmentName="Account"}
+                };
+                cx.Departments.AddRange(department);
+                cx.SaveChanges();
+                Employee employee = new Employee();
+                employee.EmployeeID = 1;
+                employee.Name = "Naveen";
+                employee.Age = 21;
+                employee.Gender = "Male";
+                employee.Designation = "Developer";
+                employee.DepartmentID = 1;
+                cx.Employees.Add(employee);
+                cx.SaveChanges();
+                Console.WriteLine("Table created successfully.");
+            }
+            Console.ReadKey();
+        }
+    }
+}
+============================SQL CODE===============================
+select d.Departmentid,d.DepartmentName,e.EmployeeID,e.Name,e.Age,e.Gender,e.Designation from Departments d
+  left join Employees e on e.EmployeeID=e.DepartmentID
+===================================================================
+-----------------------------THE-END-------------------------
