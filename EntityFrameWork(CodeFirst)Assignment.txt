@@ -46,17 +46,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace Codefirst_Assignment
 {
-    class Department
+    class EmployeeContext:DbContext
     {
-        public int DepartmentID { get; set; }
-        public string DepartmentName { get; set; }
+        public EmployeeContext():base("DbCodefirst")
+        {
+
+        }
+
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        
     }
 }
+
 ---------------------------------program class---------------------------
 using System;
 using System.Collections.Generic;
